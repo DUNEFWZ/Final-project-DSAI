@@ -1,5 +1,5 @@
 import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
+from google.generativeai.types import HarmCategory
 import streamlit as st
 
 # Set up sidebar
