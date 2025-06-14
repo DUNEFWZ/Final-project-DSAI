@@ -1,5 +1,4 @@
 import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import streamlit as st
 
 # Set up sidebar
@@ -15,15 +14,6 @@ with st.sidebar:
             st.success('API key set!', icon='✅')
         else:
             st.warning('Please enter your Gemini API key!', icon='⚠️')
-
-# Initialize model
-model = genai.GenerativeModel(
-    model_name="gemini-pro",
-    safety_settings={
-        HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW,
-        HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_LOW,
-    }
-)
 
 # Store messages
 if "messages" not in st.session_state:
