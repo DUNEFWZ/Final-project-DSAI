@@ -14,15 +14,6 @@ import google.generativeai as genai
 import re
 from song_finder_module import handle_user_query
 
-# API Key input
-GOOGLE_API_KEY = st.text_input("Masukkan API Key Gemini kamu:", type="password")
-if not GOOGLE_API_KEY:
-    st.warning("Silakan masukkan API key untuk mulai.")
-    st.stop()
-
-genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
-
 def smart_rag_response(user_input: str) -> str:
     lang = detect_language(user_input)
     input_en = translate_input(user_input) if lang != "en" else user_input
@@ -53,12 +44,21 @@ st.set_page_config(page_title="Mood-Based Song Recommender", page_icon="🎵")
 st.title("🎵 Mood-Based Song Recommender Chatbot")
 st.markdown("Ketik sesuatu berdasarkan mood kamu, dan kami akan rekomendasikan lagu!")
 
+# API Key input
+GOOGLE_API_KEY = st.text_input("Masukkan API Key Gemini kamu:", type="password")
+if not GOOGLE_API_KEY:
+    st.warning("Silakan masukkan API key untuk mulai.")
+    st.stop()
+
+genai.configure(api_key=GOOGLE_API_KEY)
+model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
+
 # Initialize chat history
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # Input box
-user_input = st.text_input("👤 Kamu:", key="user_input")
+user_input = st.text_input("👤 User", key="user_input")
 
 if st.button("Kirim"):
     if user_input.strip() != "":
