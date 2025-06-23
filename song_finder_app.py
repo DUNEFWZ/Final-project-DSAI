@@ -12,7 +12,16 @@ Application
 import streamlit as st
 import google.generativeai as genai
 import re
-#from song_finder_module import handle_user_query
+from song_finder_module import handle_user_query
+
+# API Key input
+GOOGLE_API_KEY = st.text_input("Masukkan API Key Gemini kamu:", type="password")
+if not GOOGLE_API_KEY:
+    st.warning("Silakan masukkan API key untuk mulai.")
+    st.stop()
+
+genai.configure(api_key=GOOGLE_API_KEY)
+model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
 
 def smart_rag_response(user_input: str) -> str:
     lang = detect_language(user_input)
