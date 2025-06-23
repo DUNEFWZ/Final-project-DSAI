@@ -1,3 +1,4 @@
+# song_finder_module.py
 
 import os, getpass
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
@@ -7,7 +8,6 @@ from random import shuffle
 import pandas as pd
 from google.colab import files
 
-# song_finder_module.py
 
 # Load dan bersihkan data
 CSV_FILE_PATH = 'https://raw.githubusercontent.com/DUNEFWZ/Final-project-DSAI/refs/heads/main/spotify_songs.csv'
