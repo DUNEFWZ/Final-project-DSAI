@@ -8,6 +8,10 @@ from random import shuffle
 import pandas as pd
 
 
+# Load Model
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.7)
+embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+
 # Load dan bersihkan data
 CSV_FILE_PATH = 'https://raw.githubusercontent.com/DUNEFWZ/Final-project-DSAI/refs/heads/main/spotify_songs.csv'
 df = pd.read_csv(CSV_FILE_PATH)
@@ -45,6 +49,7 @@ except:
 
 docs = df["combined_text"].tolist()
 documents = [Document(page_content=text, metadata={"index": i}) for i, text in enumerate(docs)]
+vectorstore = FAISS.from_documents(documents, embedding_model)
 
 # Tools
 import re
