@@ -12,7 +12,7 @@ Application
 import streamlit as st
 import google.generativeai as genai
 import re
-from song_finder_module import handle_user_query
+from song_finder_module import  find_song_based_on_mood
 
 # Streamlit UI
 st.set_page_config(page_title="Mood-Based Song Recommender", page_icon="🎵")
@@ -33,17 +33,20 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # Input box
-if prompt := st.chat_input("Mood lagu hari ini???"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
+user_input = st.text_input("👤 Kamu:", key="user_input")
 
-    with st.chat_message("assistant"):
-        response = handle_user_query(prompt, model)
-        st.markdown(response)
-        st.session_state.messages.append({"role": "assistant", "content": response})
-user_input = st.text_input("👤 User", key="user_input")
+if st.button("Kirim"):
+    if user_input.strip() != "":
+        try:
+            raw_response = smart_rag_response(user_input)
+            cleaned_response = clean_cli_text(raw_response)
 
+            # Simpan percakapan
+            st.session_state.chat_history.append(("👤", user_input))
+            st.session_state.chat_history.append(("🤖", cleaned_response))
+
+        except Exception as e:
+            st.error(f"Terjadi error: {e}")
 
 # Tampilkan chat history
 for speaker, message in st.session_state.chat_history:
