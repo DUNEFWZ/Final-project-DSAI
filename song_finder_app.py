@@ -14,31 +14,6 @@ import google.generativeai as genai
 import re
 from song_finder_module import handle_user_query
 
-def smart_rag_response(user_input: str) -> str:
-    lang = detect_language(user_input)
-    input_en = translate_input(user_input) if lang != "en" else user_input
-
-    inferred_genre = map_genre(input_en)
-    requested_count = detect_requested_song_count(user_input)
-    songs = retrieve_similar_songs(f"{input_en}, genre: {inferred_genre}", count=requested_count)
-    context = "\n".join([f"User: {u}\nBot: {b}" for u, b in chat_history[-2:]])
-    explanation = explain_recommendation(input_en, context)
-
-    full_response = f"\nHere are songs I picked for you:\n\n{songs}\n\n{explanation}"
-
-    if lang != "en":
-        full_response = translate_back(full_response, lang)
-        full_response = re.split(r"\n?\*\*[a-z]{2}:\*\*", full_response)[0].strip()
-
-    chat_history.append((user_input, full_response))
-    return full_response
-def clean_cli_text(text: str) -> str:
-    text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)
-    text = re.sub(r"\*(.*?)\*", r"\1", text)
-    text = re.sub(r"\{\{(.*?)\}\}", r"\1", text)
-    text = re.sub(r"\{(.*?)\}", r"\1", text)
-    return text.strip()
-
 # Streamlit UI
 st.set_page_config(page_title="Mood-Based Song Recommender", page_icon="🎵")
 st.title("🎵 Mood-Based Song Recommender Chatbot")
@@ -58,20 +33,17 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # Input box
+if prompt := st.chat_input("Mood lagu hari ini???"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant"):
+        response = handle_user_query(prompt, model)
+        st.markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
 user_input = st.text_input("👤 User", key="user_input")
 
-if st.button("Kirim"):
-    if user_input.strip() != "":
-        try:
-            raw_response = smart_rag_response(user_input)
-            cleaned_response = clean_cli_text(raw_response)
-
-            # Simpan percakapan
-            st.session_state.chat_history.append(("👤", user_input))
-            st.session_state.chat_history.append(("🤖", cleaned_response))
-
-        except Exception as e:
-            st.error(f"Terjadi error: {e}")
 
 # Tampilkan chat history
 for speaker, message in st.session_state.chat_history:
