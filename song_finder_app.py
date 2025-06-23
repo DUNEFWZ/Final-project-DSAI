@@ -27,6 +27,8 @@ if not GOOGLE_API_KEY:
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
 
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.7)
+embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 # Initialize chat history
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
