@@ -12,7 +12,7 @@ Application
 import streamlit as st
 import google.generativeai as genai
 import re
-from utils.song_finder_module import  find_song_based_on_mood
+from usong_finder_module import  smart_rag_response
 
 # Streamlit UI
 st.set_page_config(page_title="Mood-Based Song Recommender", page_icon="🎵")
