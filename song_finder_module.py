@@ -6,7 +6,6 @@ from langchain_community.vectorstores import FAISS
 from langchain.docstore.document import Document
 from random import shuffle
 import pandas as pd
-from google.colab import files
 
 
 # Load dan bersihkan data
