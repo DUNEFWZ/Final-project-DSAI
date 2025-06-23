@@ -17,7 +17,6 @@ from song_finder_module import smart_rag_response
 # Streamlit UI
 st.set_page_config(page_title="Mood-Based Song Recommender", page_icon="🎵")
 st.title("🎵 Mood-Based Song Recommender Chatbot")
-st.markdown("Ketik sesuatu berdasarkan mood kamu, dan kami akan rekomendasikan lagu!")
 
 # API Key input
 GOOGLE_API_KEY = st.text_input("Masukkan API Key Gemini kamu:", type="password")
@@ -33,7 +32,7 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # Input box
-user_input = st.text_input("👤 Kamu:", key="user_input")
+user_input = st.text_input("👤Ketik sesuatu berdasarkan mood kamu, dan kami akan rekomendasikan lagu!", key="user_input")
 
 if st.button("Kirim"):
     if user_input.strip() != "":
