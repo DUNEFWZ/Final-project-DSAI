@@ -173,3 +173,4 @@ def clean_cli_text(text: str) -> str:
     # Hapus {{curly braces}} dan {single braces}
     text = re.sub(r"\{\{(.*?)\}\}", r"\1", text)
     text = re.sub(r"\{(.*?)\}", r"\1", text)
+    return text.strip()
