@@ -165,3 +165,11 @@ def smart_rag_response(user_input: str) -> str:
     return full_response
 
 
+def clean_cli_text(text: str) -> str:
+    # Hapus tanda bold markdown: **teks** atau *teks*
+    text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)
+    text = re.sub(r"\*(.*?)\*", r"\1", text)
+
+    # Hapus {{curly braces}} dan {single braces}
+    text = re.sub(r"\{\{(.*?)\}\}", r"\1", text)
+    text = re.sub(r"\{(.*?)\}", r"\1", text)
