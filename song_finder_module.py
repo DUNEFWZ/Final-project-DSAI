@@ -163,13 +163,5 @@ def smart_rag_response(user_input: str) -> str:
 
     chat_history.append((user_input, full_response))
     return full_response
-    
-def create_agent(api_key):
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        google_api_key=api_key,
-        temperature=0.7
-    )
 
-    def rag_tool_func(query):
-        return smart_rag_response(api_key, query)
+
